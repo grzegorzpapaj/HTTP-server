@@ -32,9 +32,9 @@ public class RequestHandler {
 
         if(path.equals("/")) {
             return RESPONSE_200_OK;
+        } else {
+            return RESPONSE_400_NOT_FOUND;
         }
-
-        return RESPONSE_400_NOT_FOUND;
     }
 
     private String extractPathFromRequest(String request) {
