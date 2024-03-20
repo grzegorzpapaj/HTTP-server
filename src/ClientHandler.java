@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class ClientHandler extends Thread {
 
@@ -20,6 +21,16 @@ public class ClientHandler extends Thread {
 
             String request = requestHandler.readRequestFromBufferedReader(bufferedReader);
             System.out.println("Received request:\n " + request);
+
+            String requestType = request.split(" ")[0];
+
+            String response = requestHandler.executeRequest(requestType, request);
+            System.out.println("Writing response:\n" + response);
+            outputStream.write(response.getBytes(StandardCharsets.UTF_8));
+
+            bufferedReader.close();
+            outputStream.close();
+            clientSocket.close();;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
