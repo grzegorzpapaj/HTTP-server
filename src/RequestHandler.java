@@ -40,7 +40,15 @@ public class RequestHandler {
 
             return getResponseStringWithContentIf200(content, contentType);
 
-        } else {
+        } else if(path.equals("/user-agent")) {
+
+            //get user agent from the request
+            String userAgent = request.split("\n")[2].split(":")[1].trim();
+            String contentType = "text/plain";
+
+            return getResponseStringWithContentIf200(userAgent, contentType);
+        }
+        else {
             return RESPONSE_400_NOT_FOUND + ENDL;
         }
     }
