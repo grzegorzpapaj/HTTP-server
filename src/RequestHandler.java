@@ -28,7 +28,13 @@ public class RequestHandler {
 
     private String getResponse(String request) {
 
-        return RESPONSE_200_OK;
+        String path = extractPathFromRequest(request);
+
+        if(path.equals("/")) {
+            return RESPONSE_200_OK;
+        }
+
+        return RESPONSE_400_NOT_FOUND;
     }
 
     private String extractPathFromRequest(String request) {
