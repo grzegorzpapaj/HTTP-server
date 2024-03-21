@@ -103,7 +103,7 @@ public class RequestHandler {
             }
         }
 
-        return RESPONSE_400_NOT_FOUND;
+        return RESPONSE_400_NOT_FOUND + ENDL;
     }
 
     private String getResponseStringWithContentIf200(String content, String contentType) {
