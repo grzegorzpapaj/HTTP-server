@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class RequestHandler {
 
@@ -19,15 +22,15 @@ public class RequestHandler {
         return requestBuilder.toString();
     }
 
-    public String executeRequest(String requestType, String request) throws IOException {
+    public String executeRequest(String requestType, String request, String directory) throws IOException {
         if(requestType.equals("GET")) {
-            return getResponse(request);
+            return getResponse(request, directory);
         }
 
         return RESPONSE_400_NOT_FOUND + ENDL;
     }
 
-    private String getResponse(String request) {
+    private String getResponse(String request, String directory) throws IOException {
 
         String path = extractPathFromRequest(request);
 
@@ -47,6 +50,19 @@ public class RequestHandler {
             String contentType = "text/plain";
 
             return getResponseStringWithContentIf200(userAgent, contentType);
+        } else if(path.matches("/files/(.*)")) {
+            String filename = path.substring(7);
+            Path filepath = Paths.get(directory + "/" + filename);
+
+            if(Files.exists(filepath)) {
+                String contentType = "application/octet-stream";
+
+                String content = new String(Files.readAllBytes(filepath));
+
+                return getResponseStringWithContentIf200(content, contentType);
+            } else {
+                return RESPONSE_400_NOT_FOUND + ENDL;
+            }
         }
         else {
             return RESPONSE_400_NOT_FOUND + ENDL;

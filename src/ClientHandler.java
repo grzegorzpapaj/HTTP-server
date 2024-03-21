@@ -6,10 +6,12 @@ public class ClientHandler extends Thread {
 
     private Socket clientSocket;
     private RequestHandler requestHandler;
+    private String directory;
 
-    public ClientHandler(Socket clientSocket, RequestHandler requestHandler) {
+    public ClientHandler(Socket clientSocket, RequestHandler requestHandler, String directory) {
         this.clientSocket = clientSocket;
         this.requestHandler = requestHandler;
+        this.directory = directory;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class ClientHandler extends Thread {
 
             String requestType = request.split(" ")[0];
 
-            String response = requestHandler.executeRequest(requestType, request);
+            String response = requestHandler.executeRequest(requestType, request, directory);
             System.out.println("Writing response:\n" + response);
             outputStream.write(response.getBytes(StandardCharsets.UTF_8));
 

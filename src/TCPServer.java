@@ -4,6 +4,11 @@ import java.net.Socket;
 
 public class TCPServer {
 
+    private String directory;
+    public TCPServer(String directory) {
+        this.directory = directory;
+    }
+
     public void start() {
 
         ServerSocket serverSocket = null;
@@ -18,7 +23,7 @@ public class TCPServer {
                 clientSocket = serverSocket.accept();
                 System.out.println("Accepted a new connection");
 
-                ClientHandler clientHandlerThread = new ClientHandler(clientSocket, requestHandler);
+                ClientHandler clientHandlerThread = new ClientHandler(clientSocket, requestHandler, directory);
                 clientHandlerThread.start();
             }
 
